@@ -1,0 +1,1167 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RevHost - Премиум хостинг игровых серверов</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #7209b7;
+            --secondary: #3a0ca3;
+            --accent: #4361ee;
+            --dark: #1a1a2e;
+            --light: #f8f9fa;
+            --success: #4cc9f0;
+            --danger: #f72585;
+            --panel-bg: #252545;
+            --metric-bg: #2d2d5d;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            line-height: 1.6;
+            background-color: #0f0f1b;
+            color: white;
+            scroll-behavior: smooth;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        /* Навигация */
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background: rgba(26, 26, 46, 0.9);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            padding: 15px 0;
+            border-bottom: 1px solid rgba(67, 97, 238, 0.2);
+        }
+        
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: white;
+            text-decoration: none;
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 25px;
+        }
+        
+        .nav-links a {
+            color: #b8b8d1;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        
+        .nav-links a:hover {
+            color: white;
+        }
+        
+        .nav-cta {
+            background: var(--accent);
+            padding: 8px 20px;
+            border-radius: 50px;
+            color: white;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+        
+        .nav-cta:hover {
+            background: #4895ef;
+            transform: translateY(-2px);
+        }
+        
+        /* Header */
+        header {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 120px 0 100px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            clip-path: polygon(0 0, 100% 0, 100% 85%, 0 100%);
+            margin-top: 60px;
+        }
+        
+        header h1 {
+            font-size: 3rem;
+            margin-bottom: 15px;
+            font-weight: 800;
+            text-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+        
+        header p {
+            font-size: 1.2rem;
+            max-width: 700px;
+            margin: 0 auto 30px;
+            opacity: 0.9;
+        }
+        
+        .cta-button {
+            display: inline-block;
+            background-color: var(--accent);
+            color: white;
+            padding: 12px 30px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+        
+        .cta-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+            background-color: #4895ef;
+        }
+        
+        /* Виртуальная панель */
+        .virtual-panel {
+            background: linear-gradient(135deg, #1a1a2e, #252545);
+            border-radius: 15px;
+            padding: 40px 0;
+            margin: 80px auto;
+            max-width: 800px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.5);
+            border: 1px solid #3a3a6a;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .virtual-panel::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: linear-gradient(90deg, var(--accent), var(--success));
+        }
+        
+        .panel-container {
+            padding: 0 30px;
+        }
+        
+        .section-title {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .section-title h2 {
+            font-size: 2rem;
+            margin-bottom: 10px;
+            position: relative;
+            display: inline-block;
+        }
+        
+        .section-title h2.panel-title {
+            background: linear-gradient(90deg, var(--accent), var(--success));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .section-title h2::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 3px;
+            background: var(--accent);
+        }
+        
+        /* Заголовок панели */
+        .panel-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid rgba(67, 97, 238, 0.2);
+        }
+        
+        .server-select {
+            background: var(--metric-bg);
+            color: white;
+            border: 1px solid #3a3a6a;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            flex-grow: 1;
+            max-width: 300px;
+        }
+        
+        .server-select:hover {
+            border-color: var(--accent);
+        }
+        
+        .server-status {
+            display: flex;
+            align-items: center;
+            font-size: 0.9rem;
+            padding: 8px 15px;
+            border-radius: 20px;
+            background: rgba(76, 201, 240, 0.1);
+        }
+        
+        .server-status.online {
+            color: var(--success);
+        }
+        
+        .server-status i {
+            margin-right: 8px;
+            font-size: 0.7rem;
+        }
+        
+        /* Метрики */
+        .panel-metrics {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+        
+        .metric {
+            background: var(--metric-bg);
+            padding: 15px;
+            border-radius: 10px;
+            transition: transform 0.3s;
+        }
+        
+        .metric:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+        
+        .metric-label {
+            font-size: 0.85rem;
+            opacity: 0.8;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .metric-label i {
+            margin-right: 8px;
+            color: var(--accent);
+        }
+        
+        .progress-container {
+            margin: 12px 0;
+        }
+        
+        .progress-info {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.8rem;
+            margin-bottom: 5px;
+        }
+        
+        .progress-bar {
+            height: 8px;
+            background: #1a1a3a;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            border-radius: 4px;
+            transition: width 1s ease-in-out;
+        }
+        
+        .cpu-fill {
+            background: linear-gradient(90deg, #f72585, #b5179e);
+        }
+        
+        .ram-fill {
+            background: linear-gradient(90deg, #4361ee, #3a0ca3);
+        }
+        
+        .disk-fill {
+            background: linear-gradient(90deg, #4cc9f0, #4895ef);
+        }
+        
+        /* Кнопки действий */
+        .panel-actions {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 12px;
+            margin-bottom: 25px;
+        }
+        
+        .action-btn {
+            background: rgba(67, 97, 238, 0.1);
+            color: white;
+            border: 1px solid #3a3a6a;
+            padding: 12px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .action-btn:hover {
+            background: rgba(67, 97, 238, 0.3);
+            border-color: var(--accent);
+            transform: translateY(-3px);
+        }
+        
+        .action-btn i {
+            font-size: 1.5rem;
+            margin-bottom: 8px;
+            color: var(--accent);
+        }
+        
+        .action-btn span {
+            font-size: 0.85rem;
+        }
+        
+        /* Лог событий */
+        .panel-log {
+            background: #1a1a3a;
+            border-radius: 8px;
+            padding: 15px;
+            height: 180px;
+            overflow-y: auto;
+            font-family: 'Courier New', monospace;
+            font-size: 0.85rem;
+            margin-bottom: 20px;
+            border: 1px solid #2d2d42;
+        }
+        
+        .log-entry {
+            margin-bottom: 8px;
+            padding-bottom: 8px;
+            border-bottom: 1px dashed rgba(67, 97, 238, 0.3);
+            line-height: 1.5;
+        }
+        
+        .time {
+            color: var(--success);
+            margin-right: 10px;
+        }
+        
+        .log-warning {
+            color: #f7b538;
+        }
+        
+        .log-error {
+            color: var(--danger);
+        }
+        
+        /* Демо-уведомление */
+        .demo-note {
+            font-size: 0.8rem;
+            opacity: 0.7;
+            text-align: center;
+            padding: 15px;
+            background: rgba(26, 26, 46, 0.5);
+            border-radius: 8px;
+            border: 1px dashed var(--accent);
+        }
+        
+        .demo-note i {
+            margin-right: 5px;
+            color: var(--accent);
+        }
+        
+        /* Games Section */
+        .games {
+            padding: 100px 0;
+        }
+        
+        .games-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+        }
+        
+        .game-card {
+            background: #1a1a2e;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+            transition: all 0.3s ease;
+            position: relative;
+            border: 1px solid #2d2d42;
+        }
+        
+        .game-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.3);
+            border-color: var(--accent);
+        }
+        
+        .game-image {
+            height: 150px;
+            background-size: cover;
+            background-position: center;
+            position: relative;
+        }
+        
+        .game-image::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 50%;
+            background: linear-gradient(to top, rgba(26,26,46,0.9), transparent);
+        }
+        
+        .game-info {
+            padding: 20px;
+            text-align: center;
+        }
+        
+        .game-info h3 {
+            font-size: 1.3rem;
+            margin-bottom: 10px;
+            color: white;
+        }
+        
+        .game-info p {
+            color: #b8b8d1;
+            margin-bottom: 20px;
+            font-size: 0.9rem;
+        }
+        
+        .game-specs {
+            background: rgba(67, 97, 238, 0.1);
+            padding: 10px;
+            border-radius: 5px;
+            margin-top: 15px;
+            border-left: 3px solid var(--accent);
+        }
+        
+        .game-specs p {
+            margin: 5px 0;
+            font-size: 0.8rem;
+            color: #b8b8d1;
+        }
+
+        /* Features Section */
+        .features {
+            padding: 100px 0;
+            background: #141425;
+        }
+        
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-top: 50px;
+        }
+        
+        .feature-card {
+            background: #1a1a2e;
+            padding: 30px;
+            border-radius: 10px;
+            border: 1px solid #2d2d42;
+            transition: all 0.3s;
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--accent);
+        }
+        
+        .feature-icon {
+            font-size: 2.5rem;
+            color: var(--accent);
+            margin-bottom: 20px;
+        }
+        
+        .feature-card h3 {
+            font-size: 1.3rem;
+            margin-bottom: 15px;
+            color: white;
+        }
+        
+        .feature-card p {
+            color: #b8b8d1;
+            font-size: 0.95rem;
+        }
+
+        /* CTA Section */
+        .cta {
+            padding: 80px 0;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            text-align: center;
+        }
+        
+        .cta h2 {
+            font-size: 2.2rem;
+            margin-bottom: 20px;
+            color: white;
+        }
+        
+        .cta p {
+            max-width: 700px;
+            margin: 0 auto 30px;
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        /* Footer */
+        footer {
+            background: #0a0a12;
+            padding: 60px 0 20px;
+        }
+        
+        .footer-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 40px;
+            margin-bottom: 50px;
+        }
+        
+        .footer-col h3 {
+            font-size: 1.2rem;
+            margin-bottom: 20px;
+            color: white;
+        }
+        
+        .footer-col ul {
+            list-style: none;
+        }
+        
+        .footer-col li {
+            margin-bottom: 10px;
+        }
+        
+        .footer-col a {
+            color: #b8b8d1;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        
+        .footer-col a:hover {
+            color: white;
+        }
+        
+        .social-links {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .social-links a {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: #1a1a2e;
+            color: white;
+            transition: all 0.3s;
+        }
+        
+        .social-links a:hover {
+            background: var(--accent);
+            transform: translateY(-3px);
+        }
+        
+        .copyright {
+            text-align: center;
+            padding-top: 20px;
+            border-top: 1px solid #2d2d42;
+            color: #b8b8d1;
+            font-size: 0.9rem;
+        }
+
+        /* Анимации */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .animate {
+            animation: fadeInUp 0.6s ease forwards;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            header {
+                padding: 80px 0 60px;
+                clip-path: polygon(0 0, 100% 0, 100% 90%, 0 100%);
+            }
+            
+            header h1 {
+                font-size: 2.2rem;
+            }
+            
+            .section-title h2 {
+                font-size: 1.8rem;
+            }
+            
+            .games-grid,
+            .features-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .nav-container {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            .nav-links {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+
+            .virtual-panel {
+                margin: 40px auto;
+            }
+
+            .panel-metrics {
+                grid-template-columns: 1fr;
+            }
+            
+            .panel-actions {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .panel-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 15px;
+            }
+            
+            .server-select {
+                max-width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav>
+        <div class="container nav-container">
+            <a href="#" class="logo">RevHost</a>
+            <div class="nav-links">
+                <a href="#games">Игры</a>
+                <a href="#features">Возможности</a>
+                <a href="#virtual-panel">Панель</a>
+            </div>
+        </div>
+    </nav>
+    
+    <!-- Header -->
+    <header>
+        <div class="container">
+            <h1>Профессиональный хостинг игровых серверов</h1>
+            <p>Максимальная производительность, защита от DDoS и мгновенное развертывание для ваших любимых игр</p>
+            <a href="#games" class="cta-button">Выбрать игру</a>
+        </div>
+    </header>
+    
+    <!-- Виртуальная панель -->
+    <section class="virtual-panel" id="virtual-panel">
+        <div class="container">
+            <div class="panel-container">
+                <div class="section-title">
+                    <h2 class="panel-title">Виртуальная панель управления</h2>
+                    <p>Тестовый демо-режим с реальными функциями</p>
+                </div>
+                
+                <!-- Заголовок с выбором сервера -->
+                <div class="panel-header">
+                    <select class="server-select" id="serverSelect">
+                        <option value="minecraft-01">Minecraft #01 - SkyBlock</option>
+                        <option value="cs2-05">CS2 #05 - Competitive</option>
+                        <option value="ark-03">ARK #03 - Ragnarok</option>
+                    </select>
+                    <span class="server-status online"><i class="fas fa-circle"></i> Online</span>
+                </div>
+                
+                <!-- Основные показатели -->
+                <div class="panel-metrics">
+                    <div class="metric animate">
+                        <div class="metric-label"><i class="fas fa-microchip"></i> Процессор</div>
+                        <div class="progress-container">
+                            <div class="progress-info">
+                                <span>Использование</span>
+                                <span class="cpu-value">42%</span>
+                            </div>
+                            <div class="progress-bar">
+                                <div class="progress-fill cpu-fill" style="width: 42%"></div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="metric animate" style="animation-delay: 0.2s">
+                        <div class="metric-label"><i class="fas fa-memory"></i> Память</div>
+                        <div class="progress-container">
+                            <div class="progress-info">
+                                <span>Использовано</span>
+                                <span class="ram-value">5.1/8GB</span>
+                            </div>
+                            <div class="progress-bar">
+                                <div class="progress-fill ram-fill" style="width: 68%"></div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="metric animate" style="animation-delay: 0.4s">
+                        <div class="metric-label"><i class="fas fa-hdd"></i> Диск</div>
+                        <div class="progress-container">
+                            <div class="progress-info">
+                                <span>Свободно</span>
+                                <span class="disk-value">28/40GB</span>
+                            </div>
+                            <div class="progress-bar">
+                                <div class="progress-fill disk-fill" style="width: 30%"></div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="metric animate" style="animation-delay: 0.6s">
+                        <div class="metric-label"><i class="fas fa-users"></i> Игроки</div>
+                        <div class="player-count" style="font-size: 1.8rem; text-align: center; color: var(--success); margin-top: 10px;">
+                            24/32
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Кнопки быстрых действий -->
+                <div class="panel-actions">
+                    <button class="action-btn" id="restartBtn">
+                        <i class="fas fa-sync-alt"></i>
+                        <span>Перезагрузить</span>
+                    </button>
+                    <button class="action-btn" id="backupBtn">
+                        <i class="fas fa-save"></i>
+                        <span>Создать бэкап</span>
+                    </button>
+                    <button class="action-btn" id="consoleBtn">
+                        <i class="fas fa-terminal"></i>
+                        <span>Консоль</span>
+                    </button>
+                    <button class="action-btn" id="settingsBtn">
+                        <i class="fas fa-cog"></i>
+                        <span>Настройки</span>
+                    </button>
+                </div>
+                
+                <!-- Лог событий -->
+                <div class="panel-log" id="serverLog">
+                    <div class="log-entry"><span class="time">12:05:43</span> Система: Сервер запущен</div>
+                    <div class="log-entry"><span class="time">12:10:21</span> Игрок: <strong>Player1</strong> подключился</div>
+                    <div class="log-entry"><span class="time">12:12:35</span> Игрок: <strong>StreamerPro</strong> подключился</div>
+                    <div class="log-entry"><span class="time">12:15:37</span> Система: Авто-бэкап #234 создан</div>
+                    <div class="log-entry log-warning"><span class="time">12:18:02</span> Предупреждение: Высокая нагрузка CPU (91%)</div>
+                    <div class="log-entry"><span class="time">12:20:15</span> Игрок: <strong>Player1</strong> вышел (timeout)</div>
+                </div>
+                
+                <!-- Демо-уведомление -->
+                <div class="demo-note">
+                    <i class="fas fa-info-circle"></i> Это демонстрационная панель. В реальной версии доступны все функции управления.
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Games Section -->
+    <section class="games" id="games">
+        <div class="container">
+            <div class="section-title">
+                <h2>Поддерживаемые игры</h2>
+                <p>Выберите игру для создания сервера</p>
+            </div>
+            
+            <div class="games-grid">
+                <!-- TUBE -->
+                <div class="game-card animate">
+                    <div class="game-image" style="background-image: url('https://via.placeholder.com/400x150/1a1a2e/4361ee?text=TUBE');">
+                    </div>
+                    <div class="game-info">
+                        <h3>TUBE</h3>
+                        <p>Высокопроизводительные серверы для TUBE</p>
+                        <div class="game-specs">
+                            <p><i class="fas fa-microchip"></i> Рекомендуется: 2 ядра CPU</p>
+                            <p><i class="fas fa-memory"></i> 4GB RAM</p>
+                            <p><i class="fas fa-hdd"></i> 20GB SSD</p>
+                        </div>
+                        <a href="#" class="cta-button" style="display: inline-block; padding: 8px 20px; font-size: 0.9rem; margin-top: 15px;">Развернуть</a>
+                    </div>
+                </div>
+                
+                <!-- ARK -->
+                <div class="game-card animate" style="animation-delay: 0.1s">
+                    <div class="game-image" style="background-image: url('https://via.placeholder.com/400x150/1a1a2e/4361ee?text=ARK');">
+                    </div>
+                    <div class="game-info">
+                        <h3>ARK: Survival Evolved</h3>
+                        <p>Мощные серверы для ARK с модами</p>
+                        <div class="game-specs">
+                            <p><i class="fas fa-microchip"></i> Рекомендуется: 4 ядра CPU</p>
+                            <p><i class="fas fa-memory"></i> 8GB RAM</p>
+                            <p><i class="fas fa-hdd"></i> 40GB SSD</p>
+                        </div>
+                        <a href="#" class="cta-button" style="display: inline-block; padding: 8px 20px; font-size: 0.9rem; margin-top: 15px;">Развернуть</a>
+                    </div>
+                </div>
+                
+                <!-- CS:GO -->
+                <div class="game-card animate" style="animation-delay: 0.2s">
+                    <div class="game-image" style="background-image: url('https://via.placeholder.com/400x150/1a1a2e/4361ee?text=CS:GO');">
+                    </div>
+                    <div class="game-info">
+                        <h3>CS:GO</h3>
+                        <p>Низкий пинг для соревновательных матчей</p>
+                        <div class="game-specs">
+                            <p><i class="fas fa-microchip"></i> Рекомендуется: 2 ядра CPU</p>
+                            <p><i class="fas fa-memory"></i> 4GB RAM</p>
+                            <p><i class="fas fa-hdd"></i> 30GB SSD</p>
+                        </div>
+                        <a href="#" class="cta-button" style="display: inline-block; padding: 8px 20px; font-size: 0.9rem; margin-top: 15px;">Развернуть</a>
+                    </div>
+                </div>
+                
+                <!-- Factorio -->
+                <div class="game-card animate" style="animation-delay: 0.3s">
+                    <div class="game-image" style="background-image: url('https://via.placeholder.com/400x150/1a1a2e/4361ee?text=Factorio');">
+                    </div>
+                    <div class="game-info">
+                        <h3>Factorio</h3>
+                        <p>Стабильные серверы для сложных фабрик</p>
+                        <div class="game-specs">
+                            <p><i class="fas fa-microchip"></i> Рекомендуется: 2 ядра CPU</p>
+                            <p><i class="fas fa-memory"></i> 6GB RAM</p>
+                            <p><i class="fas fa-hdd"></i> 25GB SSD</p>
+                        </div>
+                        <a href="#" class="cta-button" style="display: inline-block; padding: 8px 20px; font-size: 0.9rem; margin-top: 15px;">Развернуть</a>
+                    </div>
+                </div>
+                
+                <!-- Minecraft -->
+                <div class="game-card animate" style="animation-delay: 0.4s">
+                    <div class="game-image" style="background-image: url('https://via.placeholder.com/400x150/1a1a2e/4361ee?text=Minecraft');">
+                    </div>
+                    <div class="game-info">
+                        <h3>Minecraft</h3>
+                        <p>Поддержка Java и Bedrock edition</p>
+                        <div class="game-specs">
+                            <p><i class="fas fa-microchip"></i> Рекомендуется: 2-4 ядра CPU</p>
+                            <p><i class="fas fa-memory"></i> 4-8GB RAM</p>
+                            <p><i class="fas fa-hdd"></i> 30GB SSD</p>
+                        </div>
+                        <a href="#" class="cta-button" style="display: inline-block; padding: 8px 20px; font-size: 0.9rem; margin-top: 15px;">Развернуть</a>
+                    </div>
+                </div>
+                
+                <!-- Counter Strike 2 -->
+                <div class="game-card animate" style="animation-delay: 0.5s">
+                    <div class="game-image" style="background-image: url('https://via.placeholder.com/400x150/1a1a2e/4361ee?text=CS2');">
+                    </div>
+                    <div class="game-info">
+                        <h3>Counter Strike 2</h3>
+                        <p>Оптимизированные серверы для CS2</p>
+                        <div class="game-specs">
+                            <p><i class="fas fa-microchip"></i> Рекомендуется: 4 ядра CPU</p>
+                            <p><i class="fas fa-memory"></i> 8GB RAM</p>
+                            <p><i class="fas fa-hdd"></i> 40GB SSD</p>
+                        </div>
+                        <a href="#" class="cta-button" style="display: inline-block; padding: 8px 20px; font-size: 0.9rem; margin-top: 15px;">Развернуть</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Features Section -->
+    <section class="features" id="features">
+        <div class="container">
+            <div class="section-title">
+                <h2>Наши преимущества</h2>
+                <p>Почему игроки выбирают RevHost</p>
+            </div>
+            
+            <div class="features-grid">
+                <div class="feature-card animate">
+                    <div class="feature-icon">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                    <h3>Защита от DDoS</h3>
+                    <p>Мощная защита от атак любого уровня с автоматическим обнаружением и блокировкой</p>
+                </div>
+                
+                <div class="feature-card animate" style="animation-delay: 0.1s">
+                    <div class="feature-icon">
+                        <i class="fas fa-bolt"></i>
+                    </div>
+                    <h3>Высокая производительность</h3>
+                    <p>Современные процессоры AMD EPYC и NVMe SSD диски для максимальной скорости</p>
+                </div>
+                
+                <div class="feature-card animate" style="animation-delay: 0.2s">
+                    <div class="feature-icon">
+                        <i class="fas fa-server"></i>
+                    </div>
+                    <h3>Мгновенное развертывание</h3>
+                    <p>Автоматическая установка серверов за 2 минуты с предустановленными модами</p>
+                </div>
+                
+                <div class="feature-card animate" style="animation-delay: 0.3s">
+                    <div class="feature-icon">
+                        <i class="fas fa-globe"></i>
+                    </div>
+                    <h3>Глобальная сеть</h3>
+                    <p>Серверы в 15 локациях по всему миру для минимального пинга</p>
+                </div>
+                
+                <div class="feature-card animate" style="animation-delay: 0.4s">
+                    <div class="feature-icon">
+                        <i class="fas fa-headset"></i>
+                    </div>
+                    <h3>Поддержка 24/7</h3>
+                    <p>Наша команда экспертов доступна круглосуточно в чате и по телефону</p>
+                </div>
+                
+                <div class="feature-card animate" style="animation-delay: 0.5s">
+                    <div class="feature-icon">
+                        <i class="fas fa-sync-alt"></i>
+                    </div>
+                    <h3>Автоматические бэкапы</h3>
+                    <p>Ежедневные резервные копии с возможностью восстановления в 1 клик</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- CTA Section -->
+    <section class="cta">
+        <div class="container">
+            <h2>Готовы запустить свой сервер?</h2>
+            <p>Присоединяйтесь к тысячам довольных игроков и создайте идеальный игровой сервер уже сегодня</p>
+            <a href="#" class="cta-button">Начать сейчас</a>
+        </div>
+    </section>
+    
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-col">
+                    <h3>RevHost</h3>
+                    <p>Премиум хостинг игровых серверов с 2025 года. Максимальная производительность и надежность.</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-vk"></i></a>
+                        <a href="#"><i class="fab fa-telegram"></i></a>
+                        <a href="#"><i class="fab fa-discord"></i></a>
+                        <a href="#"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+                
+                <div class="footer-col">
+                    <h3>Меню</h3>
+                    <ul>
+                        <li><a href="#games">Игры</a></li>
+                        <li><a href="#features">Возможности</a></li>
+                        <li><a href="#virtual-panel">Панель</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-col">
+                    <h3>Поддержка</h3>
+                    <ul>
+                        <li><a href="#">База знаний</a></li>
+                        <li><a href="#">Техническая поддержка</a></li>
+                        <li><a href="#">Сообщить о проблеме</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-col">
+                    <ul>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="copyright">
+                <p>&copy; 2025 RevHost. Все права защищены.</p>
+            </div>
+        </div>
+    </footer>
+    
+    <script>
+        // Имитация работы панели
+        document.addEventListener('DOMContentLoaded', function() {
+            const serverSelect = document.getElementById('serverSelect');
+            const restartBtn = document.getElementById('restartBtn');
+            const backupBtn = document.getElementById('backupBtn');
+            const consoleBtn = document.getElementById('consoleBtn');
+            const settingsBtn = document.getElementById('settingsBtn');
+            const serverLog = document.getElementById('serverLog');
+            
+            // Случайные метрики (демо)
+            function updateMetrics() {
+                // CPU - случайное значение от 20% до 80%
+                const cpuUsage = Math.floor(Math.random() * 60) + 20;
+                document.querySelector('.cpu-fill').style.width = cpuUsage + '%';
+                document.querySelector('.cpu-value').textContent = cpuUsage + '%';
+                
+                // RAM - случайное значение
+                const ramUsed = (Math.random() * 2 + 5).toFixed(1);
+                const ramPercent = Math.floor((ramUsed / 8) * 100);
+                document.querySelector('.ram-fill').style.width = ramPercent + '%';
+                document.querySelector('.ram-value').textContent = ramUsed + '/8GB';
+                
+                // Игроки - случайное количество
+                const playersOnline = Math.floor(Math.random() * 15) + 10;
+                document.querySelector('.player-count').textContent = playersOnline + '/32';
+                
+                // Добавляем случайное событие в лог (с 20% вероятностью)
+                if (Math.random() < 0.2) {
+                    const events = [
+                        `Игрок: <strong>User${Math.floor(Math.random() * 1000)}</strong> подключился`,
+                        `Система: Проверка целостности файлов завершена`,
+                        `Предупреждение: ${Math.floor(Math.random() * 20) + 5}% потерь пакетов`,
+                        `Игрок: <strong>Streamer${Math.floor(Math.random() * 10)}</strong> вышел`
+                    ];
+                    addLogEntry(events[Math.floor(Math.random() * events.length)]);
+                }
+            }
+            
+            // Добавление записи в лог
+            function addLogEntry(message, type = 'info') {
+                const time = new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit', second:'2-digit'});
+                const entry = document.createElement('div');
+                entry.className = `log-entry ${type === 'warning' ? 'log-warning' : type === 'error' ? 'log-error' : ''}`;
+                entry.innerHTML = `<span class="time">${time}</span> ${message}`;
+                serverLog.appendChild(entry);
+                serverLog.scrollTop = serverLog.scrollHeight;
+            }
+            
+            // Обработчики кнопок
+            restartBtn.addEventListener('click', function() {
+                addLogEntry('Система: Запущена перезагрузка сервера...', 'warning');
+                
+                // Имитация задержки перезагрузки
+                setTimeout(() => {
+                    addLogEntry('Система: Сервер остановлен');
+                    
+                    setTimeout(() => {
+                        addLogEntry('Система: Сервер запущен');
+                        updateMetrics();
+                    }, 1500);
+                }, 1000);
+            });
+            
+            backupBtn.addEventListener('click', function() {
+                const backupId = 'b' + Math.floor(Math.random() * 10000);
+                addLogEntry(`Система: Создание бэкапа (${backupId})...`);
+                
+                setTimeout(() => {
+                    addLogEntry(`Система: Бэкап ${backupId} успешно создан`);
+                }, 800);
+            });
+            
+            consoleBtn.addEventListener('click', function() {
+                addLogEntry('Система: Попытка подключения к консоли...');
+                setTimeout(() => {
+                    alert('В реальной панели здесь открывается интерактивная веб-консоль');
+                }, 300);
+            });
+            
+            settingsBtn.addEventListener('click', function() {
+                addLogEntry('Система: Открытие настроек сервера');
+                setTimeout(() => {
+                    alert('Демо: Панель настроек сервера');
+                }, 300);
+            });
+            
+            // Смена сервера
+            serverSelect.addEventListener('change', function() {
+                const serverName = serverSelect.options[serverSelect.selectedIndex].text;
+                addLogEntry(`Система: Выбран сервер ${serverName}`);
+                updateMetrics();
+            });
+            
+            // Обновление метрик каждые 3 секунды
+            setInterval(updateMetrics, 3000);
+            
+            // Имитация сетевой задержки
+            setTimeout(() => {
+                addLogEntry('Сеть: Обнаружены небольшие задержки (ping +12ms)', 'warning');
+            }, 8000);
+
+            // Анимация при скролле
+            const animateElements = () => {
+                const elements = document.querySelectorAll('.animate');
+                const windowHeight = window.innerHeight;
+                
+                elements.forEach(element => {
+                    const elementPosition = element.getBoundingClientRect().top;
+                    const elementVisible = 150;
+                    
+                    if (elementPosition < windowHeight - elementVisible) {
+                        element.style.opacity = '1';
+                        element.style.transform = 'translateY(0)';
+                    }
+                });
+            };
+            
+            // Запуск анимации при загрузке и скролле
+            window.addEventListener('load', animateElements);
+            window.addEventListener('scroll', animateElements);
+
+            // Плавная прокрутка для навигации
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    
+                    const targetId = this.getAttribute('href');
+                    if (targetId === '#') return;
+                    
+                    const targetElement = document.querySelector(targetId);
+                    if (targetElement) {
+                        window.scrollTo({
+                            top: targetElement.offsetTop - 80,
+                            behavior: 'smooth'
+                        });
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
